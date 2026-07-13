@@ -1,0 +1,86 @@
+[
+  {
+    "id": 1,
+    "icon": "light",
+    "name": "Living Room Light",
+    "status": "ON",
+    "usage": 18
+  },
+  {
+    "id": 2,
+    "icon": "light",
+    "name": "Bedroom Light",
+    "status": "OFF",
+    "usage": 0
+  },
+  {
+    "id": 3,
+    "icon": "light",
+    "name": "Kitchen Light",
+    "status": "ON",
+    "usage": 15
+  },
+  {
+    "id": 4,
+    "icon": "ac",
+    "name": "Air Conditioner",
+    "status": "ON",
+    "usage": 1500
+  },
+  {
+    "id": 5,
+    "icon": "fan",
+    "name": "Ceiling Fan",
+    "status": "ON",
+    "usage": 75
+  },
+  {
+    "id": 6,
+    "icon": "tv",
+    "name": "Smart TV",
+    "status": "OFF",
+    "usage": 0
+  },
+  {
+    "id": 7,
+    "icon": "pc",
+    "name": "Gaming PC",
+    "status": "ON",
+    "usage": 450
+  },
+  {
+    "id": 8,
+    "icon": "laptop",
+    "name": "Work Laptop",
+    "status": "ON",
+    "usage": 90
+  },
+  {
+    "id": 9,
+    "icon": "fridge",
+    "name": "Refrigerator",
+    "status": "ON",
+    "usage": 180
+  },
+  {
+    "id": 10,
+    "icon": "washing",
+    "name": "Washing Machine",
+    "status": "OFF",
+    "usage": 0
+  },
+  {
+    "id": 11,
+    "icon": "microwave",
+    "name": "Microwave Oven",
+    "status": "OFF",
+    "usage": 0
+  },
+  {
+    "id": 12,
+    "icon": "router",
+    "name": "Wi-Fi Router",
+    "status": "ON",
+    "usage": 12
+  }
+]

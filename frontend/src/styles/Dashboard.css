@@ -1,0 +1,57 @@
+.dashboard-page{
+    display:flex;
+    flex-direction:column;
+    gap:40px;
+}
+
+.welcome{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    color:white;
+}
+
+.welcome h1{
+    font-size:46px;
+    margin-bottom:10px;
+}
+
+.welcome p{
+    color:#94A3B8;
+    font-size:18px;
+}
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.chart-section{
+    background:#111827;
+    border:1px solid #1F2937;
+    border-radius:18px;
+    padding:25px;
+}
+
+.chart-section h2{
+    color:white;
+    margin-bottom:20px;
+}
+
+.device-section{
+    display:flex;
+    flex-direction:column;
+    gap:25px;
+}
+
+.device-section h2{
+    color:white;
+    margin:0;
+}
+
+.device-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
+    gap:20px;
+}

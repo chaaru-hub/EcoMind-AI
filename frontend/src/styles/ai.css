@@ -1,0 +1,61 @@
+.ai-page{
+    padding:30px;
+    color:white;
+}
+
+.ai-page h1{
+    margin-bottom:20px;
+}
+
+.chat-box{
+    height:500px;
+    background:#111827;
+    border:1px solid #1F2937;
+    border-radius:15px;
+    padding:20px;
+    overflow-y:auto;
+}
+
+.message{
+    max-width:75%;
+    padding:14px;
+    margin-bottom:15px;
+    border-radius:12px;
+    line-height:1.6;
+}
+
+.user{
+    background:#22C55E;
+    color:black;
+    margin-left:auto;
+}
+
+.ai{
+    background:#1F2937;
+}
+
+.chat-input{
+    display:flex;
+    gap:15px;
+    margin-top:20px;
+}
+
+.chat-input input{
+    flex:1;
+    padding:14px;
+    background:#111827;
+    color:white;
+    border:1px solid #374151;
+    border-radius:10px;
+    outline:none;
+}
+
+.chat-input button{
+    width:120px;
+    border:none;
+    border-radius:10px;
+    background:#22C55E;
+    color:black;
+    font-weight:bold;
+    cursor:pointer;
+}
