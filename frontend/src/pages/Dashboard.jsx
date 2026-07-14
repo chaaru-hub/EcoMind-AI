@@ -65,6 +65,22 @@ function Dashboard() {
     }
   }
 
+  const online = devices.filter((d) => d.status === "ON");
+
+  const highestConsumer =
+    online.length > 0
+      ? online.reduce((a, b) => (a.usage > b.usage ? a : b))
+      : null;
+
+  const lowestConsumer =
+    online.length > 0
+      ? online.reduce((a, b) => (a.usage < b.usage ? a : b))
+      : null;
+
+  const totalPower = online.reduce((sum, d) => sum + d.usage, 0);
+
+  const monthlyPrediction = Math.round(124 * 30);
+
   return (
     <div className="dashboard-page">
 
@@ -80,28 +96,28 @@ function Dashboard() {
         <StatCard
           title="Current Usage"
           value="1.82 kW"
-          change="Live"
+          change="▼ 5% Lower than yesterday"
           color="#22C55E"
         />
 
         <StatCard
           title="Today's Bill"
           value="₹124"
-          change="Today"
+          change={`Monthly ₹${monthlyPrediction}`}
           color="#3B82F6"
         />
 
         <StatCard
           title="CO₂ Saved"
           value="4.6 kg"
-          change="Today"
+          change="🌳 Equivalent to 2 Trees"
           color="#22C55E"
         />
 
         <StatCard
           title="Devices Online"
-          value={devices.filter(d => d.status === "ON").length}
-          change="Live"
+          value={`${online.length}/${devices.length}`}
+          change="Live Monitoring"
           color="#F59E0B"
         />
 
@@ -112,6 +128,40 @@ function Dashboard() {
         <h2>📈 Weekly Energy Usage</h2>
 
         <EnergyChart />
+
+      </section>
+
+      <section className="chart-section">
+
+        <h2>📊 Smart Insights</h2>
+
+        <div className="insight-grid">
+
+          <div className="insight-card">
+            <h3>⚡ Highest Consumer</h3>
+            <p>{highestConsumer?.name || "-"}</p>
+            <span>{highestConsumer?.usage || 0} W</span>
+          </div>
+
+          <div className="insight-card">
+            <h3>💡 Lowest Consumer</h3>
+            <p>{lowestConsumer?.name || "-"}</p>
+            <span>{lowestConsumer?.usage || 0} W</span>
+          </div>
+
+          <div className="insight-card">
+            <h3>⚡ Total Power</h3>
+            <p>{totalPower} W</p>
+            <span>Current Consumption</span>
+          </div>
+
+          <div className="insight-card">
+            <h3>💰 Monthly Prediction</h3>
+            <p>₹{monthlyPrediction}</p>
+            <span>Based on Today's Usage</span>
+          </div>
+
+        </div>
 
       </section>
 

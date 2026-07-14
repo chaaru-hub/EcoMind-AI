@@ -1,16 +1,125 @@
-# React + Vite
+# ⚡ EcoMind AI
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+An AI-powered Smart Energy Management System that helps users monitor electricity usage, manage smart devices, analyze energy consumption, and receive AI-powered energy-saving recommendations.
 
-Currently, two official plugins are available:
+---
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Oxc](https://oxc.rs)
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/)
+## 📌 Problem Statement
 
-## React Compiler
+Many households and businesses struggle to understand how electricity is consumed, resulting in high electricity bills and unnecessary energy wastage.
 
-The React Compiler is not enabled on this template because of its impact on dev & build performances. To add it, see [this documentation](https://react.dev/learn/react-compiler/installation).
+EcoMind AI provides a smart dashboard to monitor energy usage, analyze consumption patterns, and suggest ways to reduce electricity costs.
 
-## Expanding the ESLint configuration
+---
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+# ✨ Features
+
+- 📊 Interactive Energy Dashboard
+- ⚡ Real-time Energy Monitoring
+- 🤖 AI Energy Assistant (Groq LLM)
+- 🔌 Smart Device Management
+- 📈 Weekly Energy Analytics
+- 💰 Monthly Bill Prediction
+- 🌱 CO₂ Savings Tracker
+- 📊 Smart Insights
+- 📜 Energy History
+- ⚙️ User Settings
+
+---
+
+# 🛠 Tech Stack
+
+### Frontend
+- React.js
+- Vite
+- CSS
+- Recharts
+
+### Backend
+- FastAPI
+- Python
+
+### AI
+- Groq API
+- Llama 3.3 70B Versatile
+
+### Tools
+- Git
+- GitHub
+- VS Code
+
+---
+
+# 📂 Project Structure
+
+EcoMind-AI/
+│
+├── frontend/
+├── backend/
+├── data/
+├── README.md
+└── .gitignore
+
+---
+
+# 🚀 Installation
+
+## Backend
+
+cd backend
+
+pip install -r requirements.txt
+
+uvicorn main:app --reload
+
+## Frontend
+
+cd frontend
+
+npm install
+
+npm run dev
+
+---
+
+# 📸 Screenshots
+
+Dashboard
+
+Analytics
+
+Devices
+
+History
+
+Settings
+
+AI Assistant
+
+(Add screenshots here)
+
+---
+
+# 🌟 Future Scope
+
+- IoT Device Integration
+- Renewable Energy Monitoring
+- Mobile Application
+- Push Notifications
+- Voice Assistant
+- Smart Automation
+
+---
+
+# 👨‍💻 Developer
+
+**Chaaru Seelan**
+
+GitHub:
+https://github.com/chaaru-hub
+
+---
+
+# 📜 License
+
+MIT License

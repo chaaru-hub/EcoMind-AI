@@ -4,6 +4,8 @@
     gap:40px;
 }
 
+/* Welcome */
+
 .welcome{
     display:flex;
     justify-content:space-between;
@@ -21,11 +23,15 @@
     font-size:18px;
 }
 
+/* Stats */
+
 .stats{
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
     gap:20px;
 }
+
+/* Chart */
 
 .chart-section{
     background:#111827;
@@ -36,8 +42,51 @@
 
 .chart-section h2{
     color:white;
-    margin-bottom:20px;
+    margin-bottom:25px;
 }
+
+/* Smart Insights */
+
+.insight-grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+    gap:20px;
+}
+
+.insight-card{
+    background:#0F172A;
+    border:1px solid #1F2937;
+    border-radius:15px;
+    padding:20px;
+    transition:.3s;
+}
+
+.insight-card:hover{
+    transform:translateY(-5px);
+    border-color:#22C55E;
+}
+
+.insight-card h3{
+    color:#94A3B8;
+    margin-bottom:12px;
+    font-size:15px;
+}
+
+.insight-card p{
+    color:white;
+    font-size:24px;
+    font-weight:700;
+    margin:0;
+}
+
+.insight-card span{
+    display:block;
+    margin-top:10px;
+    color:#22C55E;
+    font-size:14px;
+}
+
+/* Devices */
 
 .device-section{
     display:flex;
@@ -54,4 +103,39 @@
     display:grid;
     grid-template-columns:repeat(auto-fit,minmax(320px,1fr));
     gap:20px;
+}
+
+/* Responsive */
+
+@media(max-width:900px){
+
+    .welcome{
+        flex-direction:column;
+        align-items:flex-start;
+    }
+
+    .welcome h1{
+        font-size:34px;
+    }
+
+    .stats{
+        grid-template-columns:repeat(2,1fr);
+    }
+
+}
+
+@media(max-width:600px){
+
+    .stats{
+        grid-template-columns:1fr;
+    }
+
+    .insight-grid{
+        grid-template-columns:1fr;
+    }
+
+    .device-grid{
+        grid-template-columns:1fr;
+    }
+
 }
