@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from "react";
-import { getDevices } from "../services/api";
+import { getDevices, updateDevice } from "../services/api";
 import DeviceCard from "../components/DeviceCard";
 import "../styles/devices.css";
 
@@ -16,7 +16,7 @@ function Devices() {
       const data = await getDevices();
       setDevices(data);
     } catch (error) {
-      console.error("Error loading devices:", error);
+      console.error(error);
     }
   }
 
@@ -47,18 +47,39 @@ function Devices() {
     }
   }
 
-  function toggleDevice(id) {
-    setDevices((prev) =>
-      prev.map((device) =>
-        device.id === id
-          ? {
-              ...device,
-              status: device.status === "ON" ? "OFF" : "ON",
-              usage: device.status === "ON" ? 0 : 100,
-            }
-          : device
-      )
-    );
+  async function toggleDevice(id) {
+
+    const current = devices.find((d) => d.id === id);
+
+    if (!current) return;
+
+    const newStatus = current.status === "ON" ? "OFF" : "ON";
+
+    const newUsage = newStatus === "ON"
+      ? (current.usage === 0 ? 100 : current.usage)
+      : 0;
+
+    try {
+
+      await updateDevice(id, newStatus, newUsage);
+
+      setDevices((prev) =>
+        prev.map((device) =>
+          device.id === id
+            ? {
+                ...device,
+                status: newStatus,
+                usage: newUsage,
+              }
+            : device
+        )
+      );
+
+    } catch (error) {
+      console.error(error);
+      alert("Failed to update device.");
+    }
+
   }
 
   const filteredDevices = useMemo(() => {
@@ -75,11 +96,13 @@ function Devices() {
 
   const offlineDevices = totalDevices - onlineDevices;
 
-  const totalPower = devices.reduce((sum, device) => {
-    return device.status === "ON"
-      ? sum + device.usage
-      : sum;
-  }, 0);
+  const totalPower = devices.reduce(
+    (sum, device) =>
+      device.status === "ON"
+        ? sum + device.usage
+        : sum,
+    0
+  );
 
   return (
     <div className="devices-page">

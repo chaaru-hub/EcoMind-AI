@@ -19,10 +19,16 @@ app.add_middleware(
 
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 DATA_DIR = os.path.join(BASE_DIR, "data")
+DEVICES_FILE = os.path.join(DATA_DIR, "devices.json")
 
 
 class ChatRequest(BaseModel):
     question: str
+
+
+class DeviceUpdate(BaseModel):
+    status: str
+    usage: int
 
 
 @app.get("/")
@@ -32,22 +38,33 @@ def home():
 
 @app.get("/devices")
 def get_devices():
-
-    with open(
-        os.path.join(DATA_DIR, "devices.json"),
-        "r",
-        encoding="utf-8"
-    ) as f:
+    with open(DEVICES_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
+
+
+@app.put("/devices/{device_id}")
+def update_device(device_id: int, device: DeviceUpdate):
+
+    with open(DEVICES_FILE, "r", encoding="utf-8") as f:
+        devices = json.load(f)
+
+    for d in devices:
+        if d["id"] == device_id:
+            d["status"] = device.status
+            d["usage"] = device.usage
+            break
+
+    with open(DEVICES_FILE, "w", encoding="utf-8") as f:
+        json.dump(devices, f, indent=2)
+
+    return {"message": "Device updated successfully"}
 
 
 @app.get("/energy")
 def get_energy():
-
     df = pd.read_csv(
         os.path.join(DATA_DIR, "energy.csv")
     )
-
     return df.to_dict(orient="records")
 
 

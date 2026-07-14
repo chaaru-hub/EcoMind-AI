@@ -1,6 +1,8 @@
 const API_URL = "http://127.0.0.1:8000";
 
-// Fetch Devices
+// --------------------
+// Get Devices
+// --------------------
 export async function getDevices() {
   const response = await fetch(`${API_URL}/devices`);
 
@@ -11,7 +13,31 @@ export async function getDevices() {
   return await response.json();
 }
 
-// Fetch Energy Data
+// --------------------
+// Update Device
+// --------------------
+export async function updateDevice(id, status, usage) {
+  const response = await fetch(`${API_URL}/devices/${id}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      status,
+      usage,
+    }),
+  });
+
+  if (!response.ok) {
+    throw new Error("Failed to update device");
+  }
+
+  return await response.json();
+}
+
+// --------------------
+// Get Energy
+// --------------------
 export async function getEnergy() {
   const response = await fetch(`${API_URL}/energy`);
 
@@ -22,7 +48,9 @@ export async function getEnergy() {
   return await response.json();
 }
 
+// --------------------
 // AI Chat
+// --------------------
 export async function askAI(question) {
   const response = await fetch(`${API_URL}/chat`, {
     method: "POST",

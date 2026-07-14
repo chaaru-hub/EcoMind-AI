@@ -4,12 +4,12 @@ import StatCard from "../components/StatCard";
 import EnergyChart from "../components/EnergyChart";
 import DeviceCard from "../components/deviceCard";
 
-import { getDevices } from "../services/api";
+import { getDevices, updateDevice } from "../services/api";
 
 import "../styles/dashboard.css";
 
 function Dashboard() {
-  const [devices, setDevices] = useState([]);
+  const [devices, setDevices] =useState([]);
 
   useEffect(() => {
     loadDevices();
@@ -24,18 +24,45 @@ function Dashboard() {
     }
   }
 
-  function toggleDevice(id) {
-    setDevices((prev) =>
-      prev.map((device) =>
-        device.id === id
-          ? {
-              ...device,
-              status: device.status === "ON" ? "OFF" : "ON",
-              usage: device.status === "ON" ? 0 : 100,
-            }
-          : device
-      )
-    );
+  async function toggleDevice(id) {
+
+    const current = devices.find((d) => d.id === id);
+
+    if (!current) return;
+
+    const newStatus =
+      current.status === "ON"
+        ? "OFF"
+        : "ON";
+
+    const newUsage =
+      newStatus === "ON"
+        ? (current.usage === 0 ? 100 : current.usage)
+        : 0;
+
+    try {
+
+      await updateDevice(
+        id,
+        newStatus,
+        newUsage
+      );
+
+      setDevices((prev) =>
+        prev.map((device) =>
+          device.id === id
+            ? {
+                ...device,
+                status: newStatus,
+                usage: newUsage,
+              }
+            : device
+        )
+      );
+
+    } catch (error) {
+      console.error(error);
+    }
   }
 
   function getEmoji(icon) {
@@ -65,30 +92,43 @@ function Dashboard() {
     }
   }
 
-  const online = devices.filter((d) => d.status === "ON");
+  const online = devices.filter(
+    (d) => d.status === "ON"
+  );
+
+  const totalPower = online.reduce(
+    (sum, d) => sum + d.usage,
+    0
+  );
 
   const highestConsumer =
     online.length > 0
-      ? online.reduce((a, b) => (a.usage > b.usage ? a : b))
+      ? online.reduce((a, b) =>
+          a.usage > b.usage ? a : b
+        )
       : null;
 
   const lowestConsumer =
     online.length > 0
-      ? online.reduce((a, b) => (a.usage < b.usage ? a : b))
+      ? online.reduce((a, b) =>
+          a.usage < b.usage ? a : b
+        )
       : null;
 
-  const totalPower = online.reduce((sum, d) => sum + d.usage, 0);
-
-  const monthlyPrediction = Math.round(124 * 30);
+  const monthlyPrediction = 124 * 30;
 
   return (
     <div className="dashboard-page">
 
       <div className="welcome">
+
         <div>
           <h1>Welcome Back 👋</h1>
-          <p>Monitor and optimize your energy usage with AI.</p>
+          <p>
+            Monitor and optimize your energy usage with AI.
+          </p>
         </div>
+
       </div>
 
       <div className="stats">
