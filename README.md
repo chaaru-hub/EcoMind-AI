@@ -1,25 +1,27 @@
 # 🌿 EcoMind AI
 
-**EcoMind AI** is an AI-powered Smart Energy Management System that helps users monitor electricity consumption, manage smart devices, analyze energy usage, and receive intelligent energy-saving recommendations.
+> **AI-Powered Smart Energy Management System**
 
-The application combines interactive dashboards, smart device control, energy analytics, and AI-powered assistance into a single web platform that promotes efficient and sustainable energy usage.
+EcoMind AI is an AI-powered Smart Energy Management System that helps users monitor electricity consumption, manage smart devices, analyze energy usage, and receive intelligent energy-saving recommendations.
+
+The platform combines an interactive dashboard, energy analytics, smart device management, and an AI assistant into a single web application to promote efficient, cost-effective, and sustainable energy usage.
 
 ---
 
-## 📸 Project Preview
+# 📸 Project Preview
 
 > Add screenshots of your application here.
 
-- Dashboard
-- Analytics
-- Smart Devices
-- Energy History
-- Settings
-- AI Assistant
+- 🏠 Dashboard
+- 📊 Analytics
+- 🔌 Smart Devices
+- 📜 Energy History
+- ⚙️ Settings
+- 🤖 AI Assistant
 
 ---
 
-## ✨ Features
+# ✨ Features
 
 - 📊 Interactive Energy Dashboard
 - 📈 Weekly Energy Analytics
@@ -28,91 +30,91 @@ The application combines interactive dashboards, smart device control, energy an
 - 💰 Monthly Electricity Bill Prediction
 - 🌱 Carbon Emission Tracking
 - 📜 Energy History
-- ⚙ User Settings & Budget Management
+- ⚙️ User Settings & Budget Management
 - 🔍 Device Search
 - 💾 Persistent Device Status (Backend Storage)
 
 ---
 
-## 🛠 Technology Stack
+# 🛠️ Technology Stack
 
-### Frontend
+## Frontend
 - React.js
 - Vite
 - CSS3
 - React Router
 - Recharts
 
-### Backend
+## Backend
 - Python
 - FastAPI
 - REST API
 
-### Artificial Intelligence
+## Artificial Intelligence
 - Groq API
 - Llama 3.3 70B Versatile
 
-### Data Storage
+## Data Storage
 - JSON
 - CSV
 
-### Version Control
+## Tools
 - Git
 - GitHub
+- VS Code
 
 ---
 
-# 🏗 Project Architecture
+# 🏗️ Project Architecture
 
-```
-                User
+```text
+                 User
 
-                  │
+                   │
 
-                  ▼
+                   ▼
 
-         React Frontend (Vite)
+          React Frontend (Vite)
 
-                  │
+                   │
 
-          REST API Requests
+            REST API Requests
 
-                  │
+                   │
 
-           FastAPI Backend
+             FastAPI Backend
 
-        ┌─────────┴─────────┐
+        ┌──────────┴──────────┐
 
-        │                   │
+        │                     │
 
-   devices.json       energy.csv
+   devices.json         energy.csv
 
-                  │
+                   │
 
-                  ▼
+                   ▼
 
-             Groq AI API
+              Groq AI API
 
-                  │
+                   │
 
-                  ▼
+                   ▼
 
-      AI Energy Recommendations
+       AI Energy Recommendations
 ```
 
 ---
 
 # 📂 Project Structure
 
-```
+```text
 EcoMind-AI/
 
 │
 ├── backend/
 │   ├── main.py
 │   ├── ai.py
-│   ├── devices.py
-│   └── requirements.txt
+│   ├── requirements.txt
 │
 ├── data/
 │   ├── devices.json
@@ -137,7 +139,7 @@ EcoMind-AI/
 
 # 🚀 Installation
 
-## Clone Repository
+## Clone the Repository
 
 ```bash
 git clone https://github.com/chaaru-hub/EcoMind-AI.git
@@ -147,7 +149,7 @@ cd EcoMind-AI
 
 ---
 
-# Backend Setup
+# ⚙️ Backend Setup
 
 ```bash
 cd backend
@@ -155,7 +157,9 @@ cd backend
 python -m venv .venv
 ```
 
-### Windows
+### Activate Virtual Environment
+
+**Windows**
 
 ```bash
 .venv\Scripts\activate
@@ -170,10 +174,10 @@ pip install -r requirements.txt
 ### Create a `.env` file
 
 ```env
-GROQ_API_KEY=YOUR_API_KEY
+GROQ_API_KEY=YOUR_GROQ_API_KEY
 ```
 
-### Start Backend
+### Start the Backend
 
 ```bash
 uvicorn main:app --reload
@@ -187,7 +191,7 @@ http://127.0.0.1:8000
 
 ---
 
-# Frontend Setup
+# 💻 Frontend Setup
 
 Open another terminal.
 
@@ -195,19 +199,19 @@ Open another terminal.
 cd frontend
 ```
 
-Install packages
+Install dependencies
 
 ```bash
 npm install
 ```
 
-Run application
+Run the application
 
 ```bash
 npm run dev
 ```
 
-Frontend runs at
+Frontend runs at:
 
 ```
 http://localhost:5173
@@ -215,9 +219,9 @@ http://localhost:5173
 
 ---
 
-# API Endpoints
+# 🔗 API Endpoints
 
-## Get Devices
+## Get Smart Devices
 
 ```
 GET /devices
@@ -233,7 +237,7 @@ Returns all smart devices.
 GET /energy
 ```
 
-Returns weekly energy usage.
+Returns energy usage data.
 
 ---
 
@@ -243,131 +247,127 @@ Returns weekly energy usage.
 POST /chat
 ```
 
-Example Request
+### Example Request
 
 ```json
 {
-  "question":"How can I reduce my electricity bill?"
+  "question": "How can I reduce my electricity bill?"
 }
 ```
 
-Example Response
+### Example Response
 
 ```json
 {
-  "reply":"Use LED bulbs, turn off unused appliances, and optimize thermostat settings to save energy and reduce electricity costs."
+  "reply": "Use LED lighting, turn off unused appliances, optimize thermostat settings, and reduce standby power consumption to lower electricity costs."
 }
 ```
 
 ---
 
-# Screens
+# 📱 Application Pages
 
 ## 🏠 Dashboard
 
-Displays
+Displays:
 
-- Current Usage
+- Current Energy Usage
 - Today's Bill
-- Carbon Saved
-- Devices Online
+- CO₂ Saved
+- Weekly Energy Chart
 - Smart Insights
-- Weekly Usage Chart
+- Monthly Bill Prediction
+- Connected Devices
 
 ---
 
-## 📈 Analytics
+## 📊 Analytics
 
-Displays
+Provides:
 
-- Monthly Trends
-- Energy Charts
+- Energy Consumption Trends
+- Interactive Charts
 - AI Insights
 - Usage Statistics
 
 ---
 
-## 🔌 Devices
+## 🔌 Smart Devices
 
-Users can
+Allows users to:
 
-- Turn devices ON/OFF
-- Search devices
-- Monitor power consumption
-- View online/offline devices
+- Turn Devices ON/OFF
+- Search Devices
+- Monitor Power Consumption
+- View Online & Offline Devices
+- Calculate Total Power Usage
 
 ---
 
 ## 📜 History
 
-Displays
+Displays:
 
 - Previous Energy Usage
-- Cost
-- Carbon Saved
-- CSV Download
+- Electricity Cost
+- Carbon Savings
+- CSV Export
 
 ---
 
-## ⚙ Settings
+## ⚙️ Settings
 
-Includes
+Includes:
 
-- User Profile
+- User Preferences
 - Monthly Budget
 - Notifications
-- Appearance
+- Appearance Settings
 - AI Preferences
 
 ---
 
 ## 🤖 AI Assistant
 
-Users can ask questions such as
+Users can ask questions such as:
 
 - How can I reduce my electricity bill?
-- Which appliance consumes the most power?
+- Which appliance consumes the most electricity?
 - Give me energy-saving tips.
 - How can I reduce carbon emissions?
 
-The assistant provides practical AI-generated recommendations.
+The AI assistant provides intelligent recommendations using the Groq API and Llama 3.3 model.
 
 ---
 
-# Future Enhancements
-
-- IoT Device Integration
-- Cloud Database
-- User Authentication
-- Mobile Application
-- Voice Assistant Support
-- Real-Time Notifications
-- Machine Learning Forecasting
-- Smart Automation Rules
-
----
-
-# Applications
+# 🌍 Applications
 
 - Smart Homes
 - Offices
-- Colleges
+- Educational Institutions
 - Apartments
 - Smart Cities
 - Energy Monitoring Systems
 
 ---
 
-# Author
+# 🚀 Future Enhancements
 
-**Chaaru Seelan**
+- IoT Device Integration
+- User Authentication
+- Cloud Database
+- Mobile Application
+- Voice Assistant Support
+- Renewable Energy Monitoring
+- Smart Automation Rules
+- Real-Time Notifications
 
 ---
 
-# License
+# 📜 License
 
-This project is developed for educational and demonstration purposes.
+This project is developed for educational, learning, and demonstration purposes.
 
 ---
 
-⭐ If you like this project, consider giving it a star on GitHub!
+⭐ **If you found this project helpful, consider giving it a star on GitHub!**
