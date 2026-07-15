@@ -17,15 +17,15 @@
     "id": 3,
     "icon": "light",
     "name": "Kitchen Light",
-    "status": "OFF",
-    "usage": 0
+    "status": "ON",
+    "usage": 100
   },
   {
     "id": 4,
     "icon": "ac",
     "name": "Air Conditioner",
-    "status": "OFF",
-    "usage": 0
+    "status": "ON",
+    "usage": 100
   },
   {
     "id": 5,
@@ -45,8 +45,8 @@
     "id": 7,
     "icon": "pc",
     "name": "Gaming PC",
-    "status": "OFF",
-    "usage": 0
+    "status": "ON",
+    "usage": 100
   },
   {
     "id": 8,
@@ -66,15 +66,15 @@
     "id": 10,
     "icon": "washing",
     "name": "Washing Machine",
-    "status": "OFF",
-    "usage": 0
+    "status": "ON",
+    "usage": 100
   },
   {
     "id": 11,
     "icon": "microwave",
     "name": "Microwave Oven",
-    "status": "OFF",
-    "usage": 0
+    "status": "ON",
+    "usage": 100
   },
   {
     "id": 12,
