@@ -1,4 +1,4 @@
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { BrowserRouter, MemoryRouter, Routes, Route } from "react-router-dom";
 
 import MainLayout from "./layout/MainLayout";
 
@@ -9,9 +9,12 @@ import History from "./pages/History";
 import Settings from "./pages/Settings";
 import AIAssistant from "./pages/AIAssistant";
 
+// A Claude artifact can't use URL paths, so its build keeps routes in memory.
+const Router = import.meta.env.MODE === "artifact" ? MemoryRouter : BrowserRouter;
+
 function App() {
   return (
-    <BrowserRouter>
+    <Router>
       <Routes>
 
         <Route path="/" element={<MainLayout />}>
@@ -31,7 +34,7 @@ function App() {
         </Route>
 
       </Routes>
-    </BrowserRouter>
+    </Router>
   );
 }
 
