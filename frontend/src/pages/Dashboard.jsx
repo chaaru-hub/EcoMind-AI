@@ -6,7 +6,7 @@ import DeviceCard from "../components/deviceCard";
 
 import { getDevices, updateDevice } from "../services/api";
 
-import "../styles/dashboard.css";
+import "../styles/Dashboard.css";
 
 function Dashboard() {
   const [devices, setDevices] =useState([]);

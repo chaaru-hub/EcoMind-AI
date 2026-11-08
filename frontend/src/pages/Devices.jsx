@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useState } from "react";
 import { getDevices, updateDevice } from "../services/api";
-import DeviceCard from "../components/DeviceCard";
-import "../styles/devices.css";
+import DeviceCard from "../components/deviceCard";
+import "../styles/Devices.css";
 
 function Devices() {
   const [devices, setDevices] = useState([]);
