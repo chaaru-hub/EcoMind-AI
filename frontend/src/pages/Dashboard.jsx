@@ -3,13 +3,14 @@ import { LuArrowUpRight, LuCalendar } from "react-icons/lu";
 
 import EnergyChart from "../components/EnergyChart";
 import { useEnergy } from "../hooks/useEnergy";
+import AnimatedNumber from "../components/AnimatedNumber";
 import CategoryDonut from "../components/CategoryDonut";
 import { useDevices } from "../hooks/useDevices";
 import { loadByCategory } from "../lib/devices";
 
 const TODAY_BILL = 124;
 
-function Stat({ title, value, unit, delta, note, to, highlight }) {
+function Stat({ title, value, decimals = 0, prefix = "", unit, delta, note, to, highlight }) {
   return (
     <article className={`stat ${highlight ? "stat-light" : ""}`}>
       <div className="stat-top">
@@ -19,7 +20,9 @@ function Stat({ title, value, unit, delta, note, to, highlight }) {
         </Link>
       </div>
       <div className="stat-value">
-        <span className="num">{value}</span>
+        <span className="num">
+          <AnimatedNumber value={value} decimals={decimals} prefix={prefix} />
+        </span>
         {unit && <span className="stat-unit">{unit}</span>}
         {delta && <span className={`delta ${delta.tone}`}>{delta.text}</span>}
       </div>
@@ -55,7 +58,8 @@ function Dashboard() {
           <Stat
             highlight
             title="Live load"
-            value={(totalWatts / 1000).toFixed(2)}
+            value={totalWatts / 1000}
+            decimals={2}
             unit="kW"
             delta={{ text: "▼ 5%", tone: "good" }}
             note="Lower than yesterday"
@@ -63,13 +67,15 @@ function Dashboard() {
           />
           <Stat
             title="Today's bill"
-            value={`₹${TODAY_BILL}`}
+            value={TODAY_BILL}
+            prefix="₹"
             note={`Projected ₹${(TODAY_BILL * 30).toLocaleString("en-IN")} this month`}
             to="/history"
           />
           <Stat
             title="CO₂ saved"
-            value="4.6"
+            value={4.6}
+            decimals={1}
             unit="kg"
             delta={{ text: "+12%", tone: "good" }}
             note="About 2 trees' worth"
@@ -77,7 +83,8 @@ function Dashboard() {
           />
           <Stat
             title="Used this week"
-            value={weekKwh.toFixed(1)}
+            value={weekKwh}
+            decimals={1}
             unit="kWh"
             note={peak ? `Peak on ${peak.day}, ${peak.usage} kWh` : ""}
             to="/analytics"
@@ -101,10 +108,10 @@ function Dashboard() {
             <span className="split-badge on" aria-hidden="true">●</span>
             <div>
               <div className="split-value">
-                <span className="num">{online.length}</span> on
+                <span className="num"><AnimatedNumber value={online.length} /></span> on
               </div>
               <p className="caption">
-                Drawing <span className="hl">{totalWatts} W</span> right now.
+                Drawing <span className="hl"><AnimatedNumber value={totalWatts} suffix=" W" /></span> right now.
               </p>
             </div>
           </Link>
@@ -117,7 +124,7 @@ function Dashboard() {
             <span className="split-badge off" aria-hidden="true">○</span>
             <div>
               <div className="split-value">
-                <span className="num">{offCount}</span> off
+                <span className="num"><AnimatedNumber value={offCount} /></span> off
               </div>
               <p className="caption">
                 Switched off and <span className="hl">using 0 W</span>.

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { NavLink, useLocation } from "react-router-dom";
 import {
   LuLeaf,
   LuLayoutGrid,
@@ -18,7 +18,15 @@ const LINKS = [
   { to: "/settings", label: "Settings", icon: LuSettings },
 ];
 
+function activeIndex(pathname) {
+  const i = LINKS.findIndex((l) => (l.end ? pathname === l.to : pathname.startsWith(l.to)));
+  return i;
+}
+
 function Sidebar() {
+  const { pathname } = useLocation();
+  const index = activeIndex(pathname);
+
   return (
     <nav className="rail" aria-label="Main">
       <div className="rail-logo" title="EcoMind AI">
@@ -26,6 +34,12 @@ function Sidebar() {
       </div>
 
       <ul className="rail-nav">
+        {/* the white highlight slides between icons */}
+        <li
+          className="rail-indicator"
+          aria-hidden="true"
+          style={{ "--i": Math.max(index, 0), opacity: index < 0 ? 0 : 1 }}
+        />
         {LINKS.map(({ to, label, icon: Icon, end }) => (
           <li key={to}>
             <NavLink to={to} end={end} className="rail-link" aria-label={label}>

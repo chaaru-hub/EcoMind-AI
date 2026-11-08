@@ -1,3 +1,4 @@
+import AnimatedNumber from "./AnimatedNumber";
 import { ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
 
 function CategoryDonut({ slices }) {
@@ -25,7 +26,8 @@ function CategoryDonut({ slices }) {
               paddingAngle={2}
               cornerRadius={6}
               stroke="none"
-              isAnimationActive={false}
+              animationDuration={700}
+              animationEasing="ease-out"
             >
               {slices.map((s) => (
                 <Cell key={s.name} fill={s.color} />
@@ -34,7 +36,9 @@ function CategoryDonut({ slices }) {
           </PieChart>
         </ResponsiveContainer>
         <div className="donut-center">
-          <span className="num">{total}</span>
+          <span className="num">
+            <AnimatedNumber value={total} />
+          </span>
           <small>watts</small>
         </div>
       </div>

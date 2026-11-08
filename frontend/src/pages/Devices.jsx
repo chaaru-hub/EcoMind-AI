@@ -1,6 +1,7 @@
 import { useMemo, useState } from "react";
 import { LuSearch, LuPower, LuMousePointerClick } from "react-icons/lu";
 
+import AnimatedNumber from "../components/AnimatedNumber";
 import Room3D from "../components/Room3D";
 
 import { useDevices } from "../hooks/useDevices";
@@ -63,29 +64,29 @@ function Devices() {
         <div className="tile">
           <div className="tile-cap">All devices</div>
           <div className="tile-body">
-            <span className="tile-value num">{devices.length}</span>
+            <span className="tile-value num"><AnimatedNumber value={devices.length} /></span>
             <span className="tile-note">Connected to EcoMind</span>
           </div>
         </div>
         <div className="tile mint">
           <div className="tile-cap">Switched on</div>
           <div className="tile-body">
-            <span className="tile-value num">{online.length}</span>
-            <span className="delta good">{share}%</span>
+            <span className="tile-value num"><AnimatedNumber value={online.length} /></span>
+            <span className="delta good"><AnimatedNumber value={share} suffix="%" /></span>
             <span className="tile-note">Of all devices</span>
           </div>
         </div>
         <div className="tile amber">
           <div className="tile-cap">Switched off</div>
           <div className="tile-body">
-            <span className="tile-value num">{counts.OFF}</span>
+            <span className="tile-value num"><AnimatedNumber value={counts.OFF} /></span>
             <span className="tile-note">Standing by at 0 W</span>
           </div>
         </div>
         <div className="tile butter">
           <div className="tile-cap">Live load</div>
           <div className="tile-body">
-            <span className="tile-value num">{totalWatts}</span>
+            <span className="tile-value num"><AnimatedNumber value={totalWatts} /></span>
             <span className="caption">W</span>
             <span className="tile-note">
               {biggest ? `Largest: ${biggest.name}` : "Nothing is on"}
@@ -134,12 +135,17 @@ function Devices() {
           </div>
         </div>
 
-        <div className="chips filter-row" role="group" aria-label="Filter by status">
+        <div
+          className="segmented filter-row"
+          role="group"
+          aria-label="Filter by status"
+          style={{ "--i": FILTERS.findIndex((f) => f.id === filter), "--n": FILTERS.length }}
+        >
+          <span className="segmented-thumb" aria-hidden="true" />
           {FILTERS.map((f) => (
             <button
               key={f.id}
               type="button"
-              className={`chip ${filter === f.id ? "active" : ""}`}
               aria-pressed={filter === f.id}
               onClick={() => setFilter(f.id)}
             >
@@ -162,7 +168,7 @@ function Devices() {
                 <th aria-label="Action" />
               </tr>
             </thead>
-            <tbody>
+            <tbody key={filter} className="rows-in">
               {loading && (
                 <tr>
                   <td colSpan={6} className="empty-row">Loading devices…</td>
@@ -173,8 +179,8 @@ function Devices() {
                   <td colSpan={6} className="empty-row">No devices match this search.</td>
                 </tr>
               )}
-              {visible.map((d) => (
-                <tr key={d.id}>
+              {visible.map((d, i) => (
+                <tr key={d.id} style={{ "--row": i }}>
                   <td className="strong">
                     <div className="cell-device">
                       <span className="emoji" aria-hidden="true">{deviceEmoji(d.icon)}</span>

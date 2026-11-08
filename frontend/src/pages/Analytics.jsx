@@ -20,27 +20,29 @@ function Analytics() {
       <div className="stat-row">
         <StatCard
           title="This month"
-          value="86"
+          value={86}
           unit="kWh"
           delta={{ text: "+5%", tone: "bad" }}
           note="vs. last month"
         />
         <StatCard
           title="Monthly bill"
-          value="₹2,840"
+          value={2840}
+          prefix="₹"
           delta={{ text: "−₹220", tone: "good" }}
           note="vs. last month"
         />
         <StatCard
           title="Average per day"
-          value="2.7"
+          value={2.7}
+          decimals={1}
           unit="kWh"
           delta={{ text: "+2%", tone: "bad" }}
           note="vs. last month"
         />
         <StatCard
           title="CO₂ reduced"
-          value="18"
+          value={18}
           unit="kg"
           delta={{ text: "+12%", tone: "good" }}
           note="vs. last month"

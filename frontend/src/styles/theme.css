@@ -48,6 +48,10 @@
   --radius-md: 16px;
   --radius-sm: 11px;
   --rail: 76px;
+
+  /* motion */
+  --ease-out: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --ease-spring: cubic-bezier(0.34, 1.3, 0.5, 1);
 }
 
 * {
@@ -193,9 +197,32 @@ h3 {
   color: var(--ink);
 }
 
-.rail-link.active {
-  background: var(--paper);
+.rail-nav {
+  position: relative;
+}
+
+.rail-link {
+  z-index: 1;
+}
+
+.rail-link.active,
+.rail-link.active:hover {
+  background: transparent;
   color: var(--ink-on-light);
+}
+
+.rail-indicator {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 13px;
+  background: var(--paper);
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.35);
+  transform: translateY(calc(var(--i) * 52px));
+  transition: transform 0.42s var(--ease-spring), opacity 0.2s;
+  pointer-events: none;
 }
 
 .rail-link .rail-tip {
@@ -797,9 +824,14 @@ h3 {
   }
 
   .rail-nav {
-    position: static;
+    position: relative;
+    top: auto;
     flex-direction: row;
     gap: 8px;
+  }
+
+  .rail-indicator {
+    transform: translateX(calc(var(--i) * 50px));
   }
 
   .topbar-date {
@@ -817,8 +849,177 @@ h3 {
   }
 }
 
+/* ---------- Page transitions ---------- */
+
+.route {
+  animation: route-in 0.45s var(--ease-out) both;
+}
+
+.route.is-leaving {
+  animation: route-out 0.17s ease-in both;
+  pointer-events: none;
+}
+
+@keyframes route-in {
+  from {
+    opacity: 0;
+    transform: translateY(14px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes route-out {
+  to {
+    opacity: 0;
+    transform: translateY(-8px) scale(0.995);
+  }
+}
+
+/* sections and cards rise in one after another */
+.route .page > *,
+.route .stat-grid > *,
+.route .stat-row > *,
+.route .tiles > *,
+.route .settings-grid > *,
+.route .dash-grid > section {
+  animation: rise 0.55s var(--ease-out) both;
+}
+
+@keyframes rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px) scale(0.985);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+.route .page > :nth-child(2) { animation-delay: 60ms; }
+.route .page > :nth-child(3) { animation-delay: 120ms; }
+.route .page > :nth-child(4) { animation-delay: 180ms; }
+.route .page > :nth-child(5) { animation-delay: 240ms; }
+
+.route .stat-grid > :nth-child(1),
+.route .stat-row > :nth-child(1),
+.route .tiles > :nth-child(1),
+.route .settings-grid > :nth-child(1) { animation-delay: 80ms; }
+.route .stat-grid > :nth-child(2),
+.route .stat-row > :nth-child(2),
+.route .tiles > :nth-child(2),
+.route .settings-grid > :nth-child(2) { animation-delay: 140ms; }
+.route .stat-grid > :nth-child(3),
+.route .stat-row > :nth-child(3),
+.route .tiles > :nth-child(3),
+.route .settings-grid > :nth-child(3) { animation-delay: 200ms; }
+.route .stat-grid > :nth-child(4),
+.route .stat-row > :nth-child(4),
+.route .tiles > :nth-child(4),
+.route .settings-grid > :nth-child(4) { animation-delay: 260ms; }
+.route .settings-grid > :nth-child(5) { animation-delay: 320ms; }
+.route .settings-grid > :nth-child(6) { animation-delay: 380ms; }
+.route .dash-grid > section:nth-of-type(1) { animation-delay: 160ms; }
+.route .dash-grid > section:nth-of-type(2) { animation-delay: 260ms; }
+.route .dash-grid > section:nth-of-type(3) { animation-delay: 320ms; }
+
+/* table rows fade in when a filter changes */
+.table tbody.rows-in tr {
+  animation: row-in 0.4s var(--ease-out) both;
+  animation-delay: calc(var(--row, 0) * 28ms);
+}
+
+@keyframes row-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
+  }
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+/* segmented control with a sliding highlight */
+.segmented {
+  position: relative;
+  display: inline-grid;
+  grid-template-columns: repeat(var(--n, 3), minmax(0, 1fr));
+  padding: 3px;
+  border-radius: 999px;
+  border: 1px solid var(--line-strong);
+  background: var(--panel-raised);
+}
+
+.segmented-thumb {
+  position: absolute;
+  top: 3px;
+  bottom: 3px;
+  left: 3px;
+  width: calc((100% - 6px) / var(--n, 3));
+  border-radius: 999px;
+  background: var(--paper);
+  transform: translateX(calc(var(--i, 0) * 100%));
+  transition: transform 0.36s var(--ease-spring);
+}
+
+.segmented button {
+  position: relative;
+  z-index: 1;
+  height: 28px;
+  padding: 0 16px;
+  border-radius: 999px;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--ink-soft);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  white-space: nowrap;
+  transition: color 0.25s;
+}
+
+.segmented button .count {
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  transition: color 0.25s;
+}
+
+.segmented button[aria-pressed="true"] {
+  color: var(--ink-on-light);
+}
+
+.segmented button[aria-pressed="true"] .count {
+  color: #55555c;
+}
+
+/* gentle press feedback on buttons */
+.btn,
+.chip,
+.go,
+.icon-btn {
+  transition: background 0.18s, color 0.18s, border-color 0.18s, transform 0.18s var(--ease-spring);
+}
+
+.btn:active:not(:disabled),
+.chip:active:not(:disabled),
+.icon-btn:active {
+  transform: scale(0.96);
+}
+
+.status {
+  transition: color 0.3s, background 0.3s, border-color 0.3s;
+}
+
 @media (prefers-reduced-motion: reduce) {
-  * {
+  *,
+  *::before,
+  *::after {
     transition: none !important;
+    animation: none !important;
   }
 }

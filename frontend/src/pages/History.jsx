@@ -43,9 +43,12 @@ function History() {
 
       <div className="stat-row">
         <StatCard title="Days recorded" value={historyData.length} note="Most recent first" />
-        <StatCard title="Total energy" value={totalEnergy.toFixed(1)} unit="kWh" />
-        <StatCard title="Total cost" value={`₹${totalCost.toLocaleString("en-IN")}`} />
-        <StatCard title="Carbon" value={totalCarbon.toFixed(1)} unit="kg CO₂" />
+        <StatCard title="Total energy" value={totalEnergy}
+          decimals={1} unit="kWh" />
+        <StatCard title="Total cost" value={totalCost}
+          prefix="₹" />
+        <StatCard title="Carbon" value={totalCarbon}
+          decimals={1} unit="kg CO₂" />
       </div>
 
       <section className="panel">

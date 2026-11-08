@@ -25,25 +25,30 @@ function Room3D({ devices, onToggle }) {
 
   useEffect(() => {
     if (failed) return undefined;
-    let room;
-    try {
-      room = createRoom(hostRef.current, {
-        onPick(id) {
-          const device = latest.current.devices.find((d) => d.id === id);
-          if (device) latest.current.onToggle(device);
-        },
-        onHover: setHover,
-      });
-    } catch (error) {
-      console.error("3D room unavailable", error);
-      queueMicrotask(() => setFailed(true));
-      return undefined;
-    }
-    roomRef.current = room;
-    room.update(latest.current.devices);
+    let room = null;
+    // Build the scene just after the page's entrance animation, so compiling
+    // the 3D shaders can't make that animation stutter. The canvas fades in.
+    const timer = setTimeout(() => {
+      try {
+        room = createRoom(hostRef.current, {
+          onPick(id) {
+            const device = latest.current.devices.find((d) => d.id === id);
+            if (device) latest.current.onToggle(device);
+          },
+          onHover: setHover,
+        });
+      } catch (error) {
+        console.error("3D room unavailable", error);
+        setFailed(true);
+        return;
+      }
+      roomRef.current = room;
+      room.update(latest.current.devices);
+    }, 420);
     return () => {
+      clearTimeout(timer);
       roomRef.current = null;
-      room.dispose();
+      room?.dispose();
     };
   }, [failed]);
 
