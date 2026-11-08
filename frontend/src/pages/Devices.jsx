@@ -1,5 +1,7 @@
 import { useMemo, useState } from "react";
-import { LuSearch, LuPower } from "react-icons/lu";
+import { LuSearch, LuPower, LuMousePointerClick } from "react-icons/lu";
+
+import Room3D from "../components/Room3D";
 
 import { useDevices } from "../hooks/useDevices";
 import { deviceCategory, deviceEmoji } from "../lib/devices";
@@ -91,6 +93,18 @@ function Devices() {
           </div>
         </div>
       </div>
+
+      <section className="panel room-panel">
+        <div className="panel-head">
+          <h2 className="panel-title">
+            Your home <small>live view of every device</small>
+          </h2>
+          <span className="caption room-hint">
+            <LuMousePointerClick aria-hidden="true" /> Click a device to switch it · drag to look around
+          </span>
+        </div>
+        <Room3D devices={devices} onToggle={flip} />
+      </section>
 
       <section className="panel">
         <div className="toolbar">
