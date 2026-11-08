@@ -1,20 +1,17 @@
+import { Outlet } from "react-router-dom";
+
 import Sidebar from "../components/Sidebar";
 import Topbar from "../components/Topbar";
 
-import { Outlet } from "react-router-dom";
-
-import "../styles/layout.css";
-
 function MainLayout() {
   return (
-    <div className="layout">
+    <div className="shell">
       <Sidebar />
 
-      <div className="content">
+      <main className="workspace">
         <Topbar />
-
         <Outlet />
-      </div>
+      </main>
     </div>
   );
 }

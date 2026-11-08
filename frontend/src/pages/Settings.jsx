@@ -1,137 +1,77 @@
-import "../styles/settings.css";
+function Toggle({ id, label, hint, defaultChecked }) {
+  return (
+    <label className="toggle-row" htmlFor={id}>
+      <span>
+        {label}
+        {hint && <small>{hint}</small>}
+      </span>
+      <input id={id} type="checkbox" className="switch" defaultChecked={defaultChecked} />
+    </label>
+  );
+}
 
 function Settings() {
   return (
-    <div className="settings-page">
-
-      <div className="settings-header">
-
-        <h1>⚙️ Settings</h1>
-
-        <p>Manage your EcoMind AI preferences.</p>
-
+    <div className="page">
+      <div className="page-head">
+        <div>
+          <h1>Settings</h1>
+          <p>Your profile, budget and EcoMind preferences.</p>
+        </div>
       </div>
 
       <div className="settings-grid">
-
-        {/* Profile */}
-
-        <div className="settings-card">
-
-          <h2>👤 Profile</h2>
-
-          <label>Name</label>
-          <input type="text" defaultValue="Chaaru Seelan" />
-
-          <label>Email</label>
-          <input type="email" defaultValue="you@example.com" />
-
-        </div>
-
-        {/* Monthly Budget */}
-
-        <div className="settings-card">
-
-          <h2>💰 Monthly Budget</h2>
-
-          <label>Budget (₹)</label>
-
-          <input type="number" defaultValue="5000" />
-
-          <button className="save-btn">
-            Save Budget
-          </button>
-
-        </div>
-
-        {/* Notifications */}
-
-        <div className="settings-card">
-
-          <h2>🔔 Notifications</h2>
-
-          <div className="toggle">
-            <span>Energy Alerts</span>
-            <input type="checkbox" defaultChecked />
+        <section className="panel settings-card">
+          <h2 className="panel-title">Profile</h2>
+          <div className="field">
+            <label htmlFor="set-name">Name</label>
+            <input id="set-name" className="input" type="text" defaultValue="Chaaru Seelan" />
           </div>
-
-          <div className="toggle">
-            <span>Bill Alerts</span>
-            <input type="checkbox" defaultChecked />
+          <div className="field">
+            <label htmlFor="set-email">Email</label>
+            <input id="set-email" className="input" type="email" defaultValue="you@example.com" />
           </div>
+        </section>
 
-          <div className="toggle">
-            <span>AI Suggestions</span>
-            <input type="checkbox" defaultChecked />
+        <section className="panel settings-card">
+          <h2 className="panel-title">Monthly budget</h2>
+          <div className="field">
+            <label htmlFor="set-budget">Budget (₹)</label>
+            <input id="set-budget" className="input" type="number" defaultValue="5000" />
           </div>
+          <button type="button" className="btn primary">Save budget</button>
+        </section>
 
-        </div>
+        <section className="panel settings-card">
+          <h2 className="panel-title">Notifications</h2>
+          <Toggle id="set-energy-alerts" label="Energy alerts" hint="When usage spikes" defaultChecked />
+          <Toggle id="set-bill-alerts" label="Bill alerts" hint="When you near your budget" defaultChecked />
+          <Toggle id="set-ai-tips" label="AI suggestions" defaultChecked />
+        </section>
 
-        {/* Appearance */}
+        <section className="panel settings-card">
+          <h2 className="panel-title">Appearance</h2>
+          <Toggle id="set-dark" label="Dark mode" defaultChecked />
+          <Toggle id="set-anim" label="Animations" defaultChecked />
+          <Toggle id="set-compact" label="Compact view" />
+        </section>
 
-        <div className="settings-card">
+        <section className="panel settings-card">
+          <h2 className="panel-title">AI assistant</h2>
+          <Toggle id="set-ai" label="Enable AI" defaultChecked />
+          <Toggle id="set-recs" label="Smart recommendations" defaultChecked />
+          <Toggle id="set-auto" label="Auto optimization" hint="Switch idle devices off" />
+        </section>
 
-          <h2>🌙 Appearance</h2>
-
-          <div className="toggle">
-            <span>Dark Mode</span>
-            <input type="checkbox" defaultChecked />
-          </div>
-
-          <div className="toggle">
-            <span>Animations</span>
-            <input type="checkbox" defaultChecked />
-          </div>
-
-          <div className="toggle">
-            <span>Compact View</span>
-            <input type="checkbox" />
-          </div>
-
-        </div>
-
-        {/* AI */}
-
-        <div className="settings-card">
-
-          <h2>🤖 AI Assistant</h2>
-
-          <div className="toggle">
-            <span>Enable AI</span>
-            <input type="checkbox" defaultChecked />
-          </div>
-
-          <div className="toggle">
-            <span>Smart Recommendations</span>
-            <input type="checkbox" defaultChecked />
-          </div>
-
-          <div className="toggle">
-            <span>Auto Optimization</span>
-            <input type="checkbox" />
-          </div>
-
-        </div>
-
-        {/* System */}
-
-        <div className="settings-card">
-
-          <h2>ℹ️ System</h2>
-
-          <p>Version</p>
-          <h3>EcoMind AI v1.0</h3>
-
-          <p>Backend</p>
-          <h3>FastAPI</h3>
-
-          <p>Frontend</p>
-          <h3>React + Vite</h3>
-
-        </div>
-
+        <section className="panel settings-card">
+          <h2 className="panel-title">System</h2>
+          <dl className="facts">
+            <div><dt>Version</dt><dd>EcoMind AI v1.0</dd></div>
+            <div><dt>Backend</dt><dd>FastAPI</dd></div>
+            <div><dt>Frontend</dt><dd>React + Vite</dd></div>
+          </dl>
+        </section>
       </div>
-
     </div>
   );
 }

@@ -12,7 +12,7 @@ writeFileSync(
   `<title>EcoMind AI</title>
 <style>
   :root { color-scheme: dark; }
-  html, body { background: #030712; }
+  html, body { background: #0a0a0b; }
   #root { min-height: 100vh; }
 </style>
 ${tags.filter((t) => t.startsWith("<link")).join("\n")}

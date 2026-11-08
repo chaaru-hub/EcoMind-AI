@@ -1,14 +1,17 @@
-import "../styles/cards.css";
-
-function StatCard({ title, value, change, color }) {
+// Dark stat card used on Analytics and History.
+function StatCard({ title, value, unit, delta, note }) {
   return (
-    <div className="stat-card">
-      <h3>{title}</h3>
-
-      <h1 style={{ color }}>{value}</h1>
-
-      <p>{change}</p>
-    </div>
+    <article className="stat">
+      <div className="stat-top">
+        <span className="stat-title">{title}</span>
+      </div>
+      <div className="stat-value">
+        <span className="num">{value}</span>
+        {unit && <span className="stat-unit">{unit}</span>}
+        {delta && <span className={`delta ${delta.tone}`}>{delta.text}</span>}
+      </div>
+      {note && <span className="stat-note">{note}</span>}
+    </article>
   );
 }
 
