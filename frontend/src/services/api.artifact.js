@@ -2,13 +2,13 @@
 //
 // Same functions and return shapes as api.js, but there is no FastAPI
 // backend inside a Claude artifact, so:
-//   - devices start from data/devices.json and on/off changes are saved to
+//   - devices start from backend/data/devices.json and on/off changes are saved to
 //     the artifact's built-in database (the `db` capability),
-//   - energy data comes from data/energy.csv, bundled at build time,
+//   - energy data comes from backend/data/energy.csv, bundled at build time,
 //   - the AI Assistant asks Claude (the `sample` capability) instead of Groq.
 
-import defaultDevices from "../../../data/devices.json";
-import energyCsv from "../../../data/energy.csv?raw";
+import defaultDevices from "../../../backend/data/devices.json";
+import energyCsv from "../../../backend/data/energy.csv?raw";
 
 const DEVICES = "devices";
 

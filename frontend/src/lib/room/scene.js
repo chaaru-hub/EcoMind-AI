@@ -667,7 +667,7 @@ function microwave() {
   };
 }
 
-// device id (from data/devices.json) -> builder
+// device id (from backend/data/devices.json) -> builder
 const BUILDERS = {
   1: () => pendant(1.6, -1.3, { shadeColor: 0xe6dfd0, intensity: 30 }), // Living Room Light
   2: bedsideLamp, // Bedroom Light

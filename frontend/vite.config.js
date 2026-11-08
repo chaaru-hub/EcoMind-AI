@@ -32,5 +32,11 @@ export default defineConfig(({ mode }) => {
 
   return {
     plugins: [react()],
+    server: {
+      // `npm run dev`: send /api to the FastAPI server (uvicorn main:app)
+      proxy: {
+        '/api': process.env.API_PROXY_TARGET || 'http://127.0.0.1:8000',
+      },
+    },
   }
 })

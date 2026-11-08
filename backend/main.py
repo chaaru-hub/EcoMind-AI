@@ -1,4 +1,4 @@
-from fastapi import FastAPI, HTTPException
+from fastapi import APIRouter, FastAPI, HTTPException
 from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 import csv
@@ -18,7 +18,7 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
-BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DATA_DIR = os.path.join(BASE_DIR, "data")
 SEED_DEVICES_FILE = os.path.join(DATA_DIR, "devices.json")
 
@@ -33,6 +33,12 @@ else:
     DEVICES_FILE = SEED_DEVICES_FILE
 
 
+# Every route lives under /api. On Vercel the top-level rewrite sends
+# /api/... to this service with the path unchanged; locally the Vite dev
+# server proxies /api to this server, so the paths are the same everywhere.
+api = APIRouter(prefix="/api")
+
+
 class ChatRequest(BaseModel):
     question: str
 
@@ -42,18 +48,18 @@ class DeviceUpdate(BaseModel):
     usage: int
 
 
-@app.get("/")
+@api.get("/")
 def home():
     return {"message": "EcoMind AI Backend Running"}
 
 
-@app.get("/devices")
+@api.get("/devices")
 def get_devices():
     with open(DEVICES_FILE, "r", encoding="utf-8") as f:
         return json.load(f)
 
 
-@app.put("/devices/{device_id}")
+@api.put("/devices/{device_id}")
 def update_device(device_id: int, device: DeviceUpdate):
 
     with open(DEVICES_FILE, "r", encoding="utf-8") as f:
@@ -73,7 +79,7 @@ def update_device(device_id: int, device: DeviceUpdate):
     return {"message": "Device updated successfully"}
 
 
-@app.get("/energy")
+@api.get("/energy")
 def get_energy():
     with open(os.path.join(DATA_DIR, "energy.csv"), newline="", encoding="utf-8") as f:
         return [
@@ -82,7 +88,7 @@ def get_energy():
         ]
 
 
-@app.post("/chat")
+@api.post("/chat")
 def chat(data: ChatRequest):
 
     try:
@@ -96,3 +102,6 @@ def chat(data: ChatRequest):
     return {
         "reply": answer
     }
+
+
+app.include_router(api)

@@ -37,11 +37,12 @@ function AIAssistant() {
     try {
       const response = await askAI(text);
       setMessages((prev) => [...prev, { sender: "ai", text: response.reply }]);
-    } catch {
-      setMessages((prev) => [
-        ...prev,
-        { sender: "ai", text: "I couldn't reach the AI service. Try again in a moment.", error: true },
-      ]);
+    } catch (error) {
+      const reason =
+        error?.message && error.message !== "AI request failed" && error.message !== "Failed to fetch"
+          ? error.message
+          : "I couldn't reach the AI service. Try again in a moment.";
+      setMessages((prev) => [...prev, { sender: "ai", text: reason, error: true }]);
     }
 
     setLoading(false);
