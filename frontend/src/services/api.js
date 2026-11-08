@@ -1,4 +1,9 @@
-const API_URL = "http://127.0.0.1:8000";
+// On your computer the FastAPI server runs separately on port 8000.
+// When deployed (e.g. on Vercel) the API is served from /api on the same site.
+// Set VITE_API_URL to point somewhere else.
+const API_URL =
+  import.meta.env.VITE_API_URL ??
+  (import.meta.env.DEV ? "http://127.0.0.1:8000" : "/api");
 
 // --------------------
 // Get Devices

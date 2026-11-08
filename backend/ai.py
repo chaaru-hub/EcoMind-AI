@@ -4,9 +4,24 @@ from dotenv import load_dotenv
 
 load_dotenv()
 
-client = Groq(
-    api_key=os.getenv("GROQ_API_KEY")
-)
+
+class AINotConfigured(Exception):
+    """Raised when GROQ_API_KEY isn't set."""
+
+
+_client = None
+
+
+def _get_client():
+    # Created on first use, so the rest of the API still starts without a key.
+    global _client
+    if _client is None:
+        key = os.getenv("GROQ_API_KEY")
+        if not key:
+            raise AINotConfigured()
+        _client = Groq(api_key=key)
+    return _client
+
 
 def ask_ai(question: str):
     system_prompt = """
@@ -27,7 +42,7 @@ If possible mention:
 - Environmental impact
 """
 
-    response = client.chat.completions.create(
+    response = _get_client().chat.completions.create(
         model="llama-3.3-70b-versatile",
         messages=[
             {
