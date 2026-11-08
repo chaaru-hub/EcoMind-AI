@@ -1,2 +1,6 @@
 # Python packages for the Vercel API function (api/index.py).
--r backend/requirements.txt
+# Keep in sync with backend/requirements.txt.
+fastapi
+uvicorn
+python-dotenv
+groq
