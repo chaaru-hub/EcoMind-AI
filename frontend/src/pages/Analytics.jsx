@@ -1,92 +1,90 @@
+import { LuSparkles } from "react-icons/lu";
+
 import EnergyChart from "../components/EnergyChart";
+import { useEnergy } from "../hooks/useEnergy";
 import StatCard from "../components/StatCard";
-import "../styles/analytics.css";
 
 function Analytics() {
-  return (
-    <div className="analytics-page">
+  const energy = useEnergy();
+  const peak = energy.reduce((a, b) => (b.usage > a.usage ? b : a), energy[0]);
 
-      <div className="analytics-header">
-        <h1>📊 Energy Analytics</h1>
-        <p>Monitor and analyze your electricity consumption.</p>
+  return (
+    <div className="page">
+      <div className="page-head">
+        <div>
+          <h1>Analytics</h1>
+          <p>How much you use, what it costs and where it goes.</p>
+        </div>
       </div>
 
-      <div className="analytics-stats">
-
+      <div className="stat-row">
         <StatCard
-          title="This Month"
-          value="86 kWh"
-          change="+5%"
-          color="#22C55E"
+          title="This month"
+          value={86}
+          unit="kWh"
+          delta={{ text: "+5%", tone: "bad" }}
+          note="vs. last month"
         />
-
         <StatCard
-          title="Monthly Bill"
-          value="₹2,840"
-          change="-₹220"
-          color="#3B82F6"
+          title="Monthly bill"
+          value={2840}
+          prefix="₹"
+          delta={{ text: "−₹220", tone: "good" }}
+          note="vs. last month"
         />
-
         <StatCard
-          title="Average Usage"
-          value="2.7 kWh"
-          change="+2%"
-          color="#22C55E"
+          title="Average per day"
+          value={2.7}
+          decimals={1}
+          unit="kWh"
+          delta={{ text: "+2%", tone: "bad" }}
+          note="vs. last month"
         />
-
         <StatCard
-          title="CO₂ Reduced"
-          value="18 kg"
-          change="+12%"
-          color="#10B981"
+          title="CO₂ reduced"
+          value={18}
+          unit="kg"
+          delta={{ text: "+12%", tone: "good" }}
+          note="vs. last month"
         />
-
       </div>
 
       <div className="analytics-grid">
+        <section className="panel">
+          <div className="panel-head">
+            <h2 className="panel-title">
+              Daily usage <small>kWh, this week</small>
+            </h2>
+          </div>
+          <EnergyChart data={energy} height={320} />
+        </section>
 
-        <div className="chart-card">
-
-          <h2>📈 Monthly Energy Trend</h2>
-
-          <EnergyChart />
-
-        </div>
-
-        <div className="insight-card">
-
-          <h2>🤖 AI Insights</h2>
-
-          <div className="insight">
-
-            <h3>Peak Usage</h3>
-
-            <p>Friday (3.2 kWh)</p>
-
+        <section className="panel insights">
+          <div className="panel-head">
+            <h2 className="panel-title">
+              <LuSparkles aria-hidden="true" className="title-icon" /> AI insights
+            </h2>
           </div>
 
           <div className="insight">
-
-            <h3>Highest Device</h3>
-
-            <p>Air Conditioner</p>
-
+            <span className="caption">Peak day</span>
+            <strong>
+              {peak.day} · <span className="num">{peak.usage} kWh</span>
+            </strong>
           </div>
-
           <div className="insight">
-
-            <h3>Recommendation</h3>
-
+            <span className="caption">Biggest consumer</span>
+            <strong>Air Conditioner</strong>
+          </div>
+          <div className="insight highlight">
+            <span className="caption">Recommendation</span>
             <p>
-              Reduce AC usage by 1 hour/day to save approximately ₹350 every month.
+              Run the AC one hour less each day to save about{" "}
+              <strong className="num">₹350</strong> a month.
             </p>
-
           </div>
-
-        </div>
-
+        </section>
       </div>
-
     </div>
   );
 }

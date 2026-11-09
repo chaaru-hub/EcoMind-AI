@@ -1,4 +1,8 @@
-const API_URL = "http://127.0.0.1:8000";
+// The API is always reached at /api on the same site: on Vercel a rewrite
+// routes it to the backend service, and in `npm run dev` Vite proxies it to
+// the FastAPI server on port 8000 (see vite.config.js).
+// Set VITE_API_URL to use a backend somewhere else.
+const API_URL = import.meta.env.VITE_API_URL ?? "/api";
 
 // --------------------
 // Get Devices
@@ -63,7 +67,9 @@ export async function askAI(question) {
   });
 
   if (!response.ok) {
-    throw new Error("AI request failed");
+    // the backend explains what went wrong, e.g. a missing GROQ_API_KEY
+    const body = await response.json().catch(() => null);
+    throw new Error(body?.detail || "AI request failed");
   }
 
   return await response.json();

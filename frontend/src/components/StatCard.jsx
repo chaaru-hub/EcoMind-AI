@@ -1,14 +1,26 @@
-import "../styles/cards.css";
+import AnimatedNumber from "./AnimatedNumber";
 
-function StatCard({ title, value, change, color }) {
+// Dark stat card used on Analytics and History.
+// A numeric `value` counts up; `prefix` and `decimals` format it.
+function StatCard({ title, value, decimals = 0, prefix = "", unit, delta, note }) {
   return (
-    <div className="stat-card">
-      <h3>{title}</h3>
-
-      <h1 style={{ color }}>{value}</h1>
-
-      <p>{change}</p>
-    </div>
+    <article className="stat">
+      <div className="stat-top">
+        <span className="stat-title">{title}</span>
+      </div>
+      <div className="stat-value">
+        <span className="num">
+          {typeof value === "number" ? (
+            <AnimatedNumber value={value} decimals={decimals} prefix={prefix} />
+          ) : (
+            value
+          )}
+        </span>
+        {unit && <span className="stat-unit">{unit}</span>}
+        {delta && <span className={`delta ${delta.tone}`}>{delta.text}</span>}
+      </div>
+      {note && <span className="stat-note">{note}</span>}
+    </article>
   );
 }
 

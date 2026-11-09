@@ -1,140 +1,113 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import { LuSendHorizontal, LuSparkles } from "react-icons/lu";
+
 import { askAI } from "../services/api";
-import "../styles/ai.css";
+
+const QUICK_QUESTIONS = [
+  "How can I reduce my electricity bill?",
+  "Which appliance uses the most power?",
+  "Give me energy saving tips",
+  "How can I cut my carbon emissions?",
+];
 
 function AIAssistant() {
   const [question, setQuestion] = useState("");
-
   const [messages, setMessages] = useState([
     {
       sender: "ai",
       text:
-        "👋 Hello! I'm EcoMind AI. I can help you reduce electricity usage, estimate bills, explain your energy data and suggest smart energy-saving tips.",
+        "Hi! I'm EcoMind AI. Ask me how to lower your bill, which devices use the most power, or how to cut your carbon footprint.",
     },
   ]);
-
   const [loading, setLoading] = useState(false);
+  const endRef = useRef(null);
 
-  const quickQuestions = [
-    "How can I reduce my electricity bill?",
-    "Which appliance consumes the most power?",
-    "Give me energy saving tips",
-    "How can I reduce carbon emissions?",
-  ];
+  useEffect(() => {
+    endRef.current?.scrollIntoView({ block: "nearest" });
+  }, [messages, loading]);
 
-  async function sendMessage(customQuestion) {
-    const text = customQuestion || question;
+  async function sendMessage(custom) {
+    const text = (custom ?? question).trim();
+    if (!text || loading) return;
 
-    if (!text.trim()) return;
-
-    const userMessage = {
-      sender: "user",
-      text,
-    };
-
-    setMessages((prev) => [...prev, userMessage]);
-
+    setMessages((prev) => [...prev, { sender: "user", text }]);
     setQuestion("");
-
     setLoading(true);
 
     try {
       const response = await askAI(text);
-
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "ai",
-          text: response.reply,
-        },
-      ]);
+      setMessages((prev) => [...prev, { sender: "ai", text: response.reply }]);
     } catch (error) {
-      setMessages((prev) => [
-        ...prev,
-        {
-          sender: "ai",
-          text: "❌ Unable to connect to EcoMind AI.",
-        },
-      ]);
+      const reason =
+        error?.message && error.message !== "AI request failed" && error.message !== "Failed to fetch"
+          ? error.message
+          : "I couldn't reach the AI service. Try again in a moment.";
+      setMessages((prev) => [...prev, { sender: "ai", text: reason, error: true }]);
     }
 
     setLoading(false);
   }
 
   return (
-    <div className="ai-page">
-
-      <div className="ai-header">
-
-        <h1>🤖 EcoMind AI Assistant</h1>
-
-        <p>
-          Ask anything about your energy usage, electricity bills and smart
-          devices.
-        </p>
-
+    <div className="page ai-page">
+      <div className="page-head">
+        <div>
+          <h1>AI Assistant</h1>
+          <p>Ask about your energy use, bills and devices.</p>
+        </div>
       </div>
 
-      <div className="quick-prompts">
-
-        {quickQuestions.map((item, index) => (
-          <button
-            key={index}
-            onClick={() => sendMessage(item)}
-          >
-            {item}
+      <div className="chips">
+        {QUICK_QUESTIONS.map((q) => (
+          <button key={q} type="button" className="chip" onClick={() => sendMessage(q)} disabled={loading}>
+            {q}
           </button>
         ))}
-
       </div>
 
-      <div className="chat-container">
+      <section className="panel chat">
+        <div className="chat-log" aria-live="polite">
+          {messages.map((m, i) => (
+            <div key={i} className={`msg ${m.sender} ${m.error ? "error" : ""}`}>
+              {m.sender === "ai" && (
+                <span className="msg-avatar" aria-hidden="true">
+                  <LuSparkles />
+                </span>
+              )}
+              <div className="msg-bubble">{m.text}</div>
+            </div>
+          ))}
+          {loading && (
+            <div className="msg ai">
+              <span className="msg-avatar" aria-hidden="true">
+                <LuSparkles />
+              </span>
+              <div className="msg-bubble typing">Thinking…</div>
+            </div>
+          )}
+          <div ref={endRef} />
+        </div>
 
-        {messages.map((msg, index) => (
-
-          <div
-            key={index}
-            className={
-              msg.sender === "user"
-                ? "message user-message"
-                : "message ai-message"
-            }
-          >
-            {msg.text}
-          </div>
-
-        ))}
-
-        {loading && (
-
-          <div className="message ai-message">
-            🤖 EcoMind AI is thinking...
-          </div>
-
-        )}
-
-      </div>
-
-      <div className="chat-input">
-
-        <input
-          type="text"
-          placeholder="Ask EcoMind AI..."
-          value={question}
-          onChange={(e) => setQuestion(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === "Enter") {
-              sendMessage();
-            }
+        <form
+          className="chat-input"
+          onSubmit={(e) => {
+            e.preventDefault();
+            sendMessage();
           }}
-        />
-
-        <button onClick={() => sendMessage()}>
-          Send
-        </button>
-
-      </div>
-
+        >
+          <input
+            id="ai-question"
+            className="input"
+            type="text"
+            placeholder="Ask EcoMind AI…"
+            value={question}
+            onChange={(e) => setQuestion(e.target.value)}
+          />
+          <button type="submit" className="btn primary" disabled={loading || !question.trim()}>
+            <LuSendHorizontal aria-hidden="true" /> Send
+          </button>
+        </form>
+      </section>
     </div>
   );
 }

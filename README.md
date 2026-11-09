@@ -115,10 +115,9 @@ EcoMind-AI/
 │   ├── main.py
 │   ├── ai.py
 │   ├── requirements.txt
-│
-├── data/
-│   ├── devices.json
-│   └── energy.csv
+│   └── data/
+│       ├── devices.json
+│       └── energy.csv
 │
 ├── frontend/
 │   ├── src/
@@ -131,6 +130,7 @@ EcoMind-AI/
 │   ├── package.json
 │   └── vite.config.js
 │
+├── vercel.json
 ├── .gitignore
 └── README.md
 ```
@@ -186,7 +186,7 @@ uvicorn main:app --reload
 Backend runs at:
 
 ```
-http://127.0.0.1:8000
+http://127.0.0.1:8000/api
 ```
 
 ---

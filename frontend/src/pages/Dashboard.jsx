@@ -1,231 +1,150 @@
-import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
+import { LuArrowUpRight, LuCalendar } from "react-icons/lu";
 
-import StatCard from "../components/StatCard";
 import EnergyChart from "../components/EnergyChart";
-import DeviceCard from "../components/deviceCard";
+import { useEnergy } from "../hooks/useEnergy";
+import AnimatedNumber from "../components/AnimatedNumber";
+import CategoryDonut from "../components/CategoryDonut";
+import { useDevices } from "../hooks/useDevices";
+import { loadByCategory } from "../lib/devices";
 
-import { getDevices, updateDevice } from "../services/api";
+const TODAY_BILL = 124;
 
-import "../styles/dashboard.css";
+function Stat({ title, value, decimals = 0, prefix = "", unit, delta, note, to, highlight }) {
+  return (
+    <article className={`stat ${highlight ? "stat-light" : ""}`}>
+      <div className="stat-top">
+        <span className="stat-title">{title}</span>
+        <Link to={to} className={`go ${highlight ? "solid" : ""}`} aria-label={`Open ${title}`}>
+          <LuArrowUpRight />
+        </Link>
+      </div>
+      <div className="stat-value">
+        <span className="num">
+          <AnimatedNumber value={value} decimals={decimals} prefix={prefix} />
+        </span>
+        {unit && <span className="stat-unit">{unit}</span>}
+        {delta && <span className={`delta ${delta.tone}`}>{delta.text}</span>}
+      </div>
+      <span className="stat-note">{note}</span>
+    </article>
+  );
+}
 
 function Dashboard() {
-  const [devices, setDevices] =useState([]);
+  const { devices, online, totalWatts } = useDevices();
+  const energy = useEnergy();
 
-  useEffect(() => {
-    loadDevices();
-  }, []);
-
-  async function loadDevices() {
-    try {
-      const data = await getDevices();
-      setDevices(data);
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  async function toggleDevice(id) {
-
-    const current = devices.find((d) => d.id === id);
-
-    if (!current) return;
-
-    const newStatus =
-      current.status === "ON"
-        ? "OFF"
-        : "ON";
-
-    const newUsage =
-      newStatus === "ON"
-        ? (current.usage === 0 ? 100 : current.usage)
-        : 0;
-
-    try {
-
-      await updateDevice(
-        id,
-        newStatus,
-        newUsage
-      );
-
-      setDevices((prev) =>
-        prev.map((device) =>
-          device.id === id
-            ? {
-                ...device,
-                status: newStatus,
-                usage: newUsage,
-              }
-            : device
-        )
-      );
-
-    } catch (error) {
-      console.error(error);
-    }
-  }
-
-  function getEmoji(icon) {
-    switch (icon) {
-      case "light":
-        return "💡";
-      case "ac":
-        return "❄️";
-      case "fan":
-        return "🌀";
-      case "tv":
-        return "📺";
-      case "pc":
-        return "🖥️";
-      case "laptop":
-        return "💻";
-      case "fridge":
-        return "🧊";
-      case "washing":
-        return "🧺";
-      case "microwave":
-        return "🍽️";
-      case "router":
-        return "📡";
-      default:
-        return "🔌";
-    }
-  }
-
-  const online = devices.filter(
-    (d) => d.status === "ON"
-  );
-
-  const totalPower = online.reduce(
-    (sum, d) => sum + d.usage,
-    0
-  );
-
-  const highestConsumer =
-    online.length > 0
-      ? online.reduce((a, b) =>
-          a.usage > b.usage ? a : b
-        )
-      : null;
-
-  const lowestConsumer =
-    online.length > 0
-      ? online.reduce((a, b) =>
-          a.usage < b.usage ? a : b
-        )
-      : null;
-
-  const monthlyPrediction = 124 * 30;
+  const weekKwh = energy.reduce((s, d) => s + Number(d.usage || 0), 0);
+  const peak = energy.reduce((a, b) => (b.usage > a.usage ? b : a), energy[0]);
+  const offCount = devices.length - online.length;
 
   return (
-    <div className="dashboard-page">
-
-      <div className="welcome">
-
+    <div className="page">
+      <div className="page-head">
         <div>
-          <h1>Welcome Back 👋</h1>
-          <p>
-            Monitor and optimize your energy usage with AI.
-          </p>
+          <h1>Hello, Chaaru! 👋</h1>
+          <p>Here's how your home is using energy this week.</p>
         </div>
-
+        <div className="head-tools">
+          <span className="pill-label">
+            <LuCalendar aria-hidden="true" /> This week
+          </span>
+        </div>
       </div>
 
-      <div className="stats">
+      <div className="dash-grid">
+        <div className="stat-grid">
+          <Stat
+            highlight
+            title="Live load"
+            value={totalWatts / 1000}
+            decimals={2}
+            unit="kW"
+            delta={{ text: "▼ 5%", tone: "good" }}
+            note="Lower than yesterday"
+            to="/devices"
+          />
+          <Stat
+            title="Today's bill"
+            value={TODAY_BILL}
+            prefix="₹"
+            note={`Projected ₹${(TODAY_BILL * 30).toLocaleString("en-IN")} this month`}
+            to="/history"
+          />
+          <Stat
+            title="CO₂ saved"
+            value={4.6}
+            decimals={1}
+            unit="kg"
+            delta={{ text: "+12%", tone: "good" }}
+            note="About 2 trees' worth"
+            to="/analytics"
+          />
+          <Stat
+            title="Used this week"
+            value={weekKwh}
+            decimals={1}
+            unit="kWh"
+            note={peak ? `Peak on ${peak.day}, ${peak.usage} kWh` : ""}
+            to="/analytics"
+          />
+        </div>
 
-        <StatCard
-          title="Current Usage"
-          value="1.82 kW"
-          change="▼ 5% Lower than yesterday"
-          color="#22C55E"
-        />
+        <section className="panel chart-panel">
+          <div className="panel-head">
+            <h2 className="panel-title">
+              Energy usage <small>kWh per day, this week</small>
+            </h2>
+            <Link to="/analytics" className="go light" aria-label="Open analytics">
+              <LuArrowUpRight />
+            </Link>
+          </div>
+          <EnergyChart data={energy} height={290} />
+        </section>
 
-        <StatCard
-          title="Today's Bill"
-          value="₹124"
-          change={`Monthly ₹${monthlyPrediction}`}
-          color="#3B82F6"
-        />
+        <section className="split">
+          <Link to="/devices" className="split-half">
+            <span className="split-badge on" aria-hidden="true">●</span>
+            <div>
+              <div className="split-value">
+                <span className="num"><AnimatedNumber value={online.length} /></span> on
+              </div>
+              <p className="caption">
+                Drawing <span className="hl"><AnimatedNumber value={totalWatts} suffix=" W" /></span> right now.
+              </p>
+            </div>
+          </Link>
 
-        <StatCard
-          title="CO₂ Saved"
-          value="4.6 kg"
-          change="🌳 Equivalent to 2 Trees"
-          color="#22C55E"
-        />
+          <Link to="/devices" className="split-go go light" aria-label="Manage devices">
+            <LuArrowUpRight />
+          </Link>
 
-        <StatCard
-          title="Devices Online"
-          value={`${online.length}/${devices.length}`}
-          change="Live Monitoring"
-          color="#F59E0B"
-        />
+          <Link to="/devices" className="split-half">
+            <span className="split-badge off" aria-hidden="true">○</span>
+            <div>
+              <div className="split-value">
+                <span className="num"><AnimatedNumber value={offCount} /></span> off
+              </div>
+              <p className="caption">
+                Switched off and <span className="hl">using 0 W</span>.
+              </p>
+            </div>
+          </Link>
+        </section>
 
+        <section className="panel">
+          <div className="panel-head">
+            <h2 className="panel-title">
+              Load by category <small>devices that are on</small>
+            </h2>
+            <Link to="/devices" className="go light" aria-label="Open devices">
+              <LuArrowUpRight />
+            </Link>
+          </div>
+          <CategoryDonut slices={loadByCategory(devices)} />
+        </section>
       </div>
-
-      <section className="chart-section">
-
-        <h2>📈 Weekly Energy Usage</h2>
-
-        <EnergyChart />
-
-      </section>
-
-      <section className="chart-section">
-
-        <h2>📊 Smart Insights</h2>
-
-        <div className="insight-grid">
-
-          <div className="insight-card">
-            <h3>⚡ Highest Consumer</h3>
-            <p>{highestConsumer?.name || "-"}</p>
-            <span>{highestConsumer?.usage || 0} W</span>
-          </div>
-
-          <div className="insight-card">
-            <h3>💡 Lowest Consumer</h3>
-            <p>{lowestConsumer?.name || "-"}</p>
-            <span>{lowestConsumer?.usage || 0} W</span>
-          </div>
-
-          <div className="insight-card">
-            <h3>⚡ Total Power</h3>
-            <p>{totalPower} W</p>
-            <span>Current Consumption</span>
-          </div>
-
-          <div className="insight-card">
-            <h3>💰 Monthly Prediction</h3>
-            <p>₹{monthlyPrediction}</p>
-            <span>Based on Today's Usage</span>
-          </div>
-
-        </div>
-
-      </section>
-
-      <section className="device-section">
-
-        <h2>🔌 Smart Devices</h2>
-
-        <div className="device-grid">
-
-          {devices.map((device) => (
-            <DeviceCard
-              key={device.id}
-              icon={getEmoji(device.icon)}
-              name={device.name}
-              status={device.status}
-              usage={device.usage}
-              onToggle={() => toggleDevice(device.id)}
-            />
-          ))}
-
-        </div>
-
-      </section>
-
     </div>
   );
 }

@@ -1,40 +1,34 @@
-import {
-  FaBell,
-  FaSearch,
-  FaUserCircle,
-} from "react-icons/fa";
+import { Link } from "react-router-dom";
+import { LuSearch, LuBell, LuSettings } from "react-icons/lu";
 
-import "../styles/topbar.css";
+function todayLabel() {
+  const d = new Date();
+  const weekday = d.toLocaleDateString("en-GB", { weekday: "short" });
+  const rest = d.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+  return `Today, ${weekday} ${rest}`;
+}
 
 function Topbar() {
-
   return (
-
     <header className="topbar">
+      <label className="search">
+        <LuSearch aria-hidden="true" />
+        <input type="search" placeholder="Search" aria-label="Search" />
+      </label>
 
-      <div className="search-box">
+      <span className="topbar-date">{todayLabel()}</span>
 
-        <FaSearch />
-
-        <input
-          type="text"
-          placeholder="Search..."
-        />
-
+      <div className="topbar-actions">
+        <Link to="/settings" className="icon-btn" aria-label="Settings">
+          <LuSettings />
+        </Link>
+        <button type="button" className="icon-btn" aria-label="Notifications">
+          <LuBell />
+        </button>
+        <div className="avatar" aria-label="Chaaru Seelan">CS</div>
       </div>
-
-      <div className="top-icons">
-
-        <FaBell className="icon"/>
-
-        <FaUserCircle className="profile"/>
-
-      </div>
-
     </header>
-
   );
-
 }
 
 export default Topbar;
